@@ -5,7 +5,6 @@ import { Search, SlidersHorizontal } from "lucide-react";
 import { AirportCard } from "./AirportCard";
 import { FilterBar } from "./FilterBar";
 import type { Airport } from "./AirportCard";
-import { useFavorites } from "@/hooks/useFavorites";
 import airportsData from "@/data/airports.json";
 
 const airports = airportsData as Airport[];
@@ -26,19 +25,16 @@ export function AirportList() {
   const [filter, setFilter] = useState("全部");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortOption>("default");
-  const { favorites, toggleFavorite, isFavorite, ready } = useFavorites();
 
   const normalizedQuery = query.trim().toLowerCase();
 
   const filteredAirports = useMemo(() => {
     let result = airports;
 
-    // 1. Filter by category / tags / favorites
+    // 1. Filter by category / tags
     if (filter !== "全部") {
       result = result.filter((airport) => {
         switch (filter) {
-          case "我的收藏":
-            return favorites.includes(airport.id);
           case "低价":
             return airport.category === "低价";
           case "性价比":
@@ -71,8 +67,7 @@ export function AirportList() {
       result = result.filter(
         (airport) =>
           airport.name.toLowerCase().includes(normalizedQuery) ||
-          airport.tags.some((tag) =>
-            tag.toLowerCase().includes(normalizedQuery)
+          airport.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery)
           ) ||
           airport.description.toLowerCase().includes(normalizedQuery)
       );
@@ -98,7 +93,7 @@ export function AirportList() {
     });
 
     return result;
-  }, [filter, normalizedQuery, sort, favorites]);
+  }, [filter, normalizedQuery, sort]);
 
   const hasActiveFilter =
     filter !== "全部" || normalizedQuery !== "" || sort !== "default";
@@ -107,7 +102,7 @@ export function AirportList() {
     <>
       <FilterBar onFilterChange={setFilter} />
 
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
@@ -115,7 +110,7 @@ export function AirportList() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="搜索机场名称、标签或描述..."
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[44px]"
           />
         </div>
 
@@ -124,7 +119,7 @@ export function AirportList() {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as SortOption)}
-            className="pl-10 pr-8 py-2.5 bg-white border border-gray-200 rounded-xl text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+            className="w-full sm:w-auto pl-10 pr-8 py-2.5 bg-white border border-gray-200 rounded-xl text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer min-h-[44px]"
           >
             <option value="default">默认推荐</option>
             <option value="price-asc">价格从低到高</option>
@@ -136,24 +131,16 @@ export function AirportList() {
       </div>
 
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-800">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800">
           {hasActiveFilter
             ? `找到 ${filteredAirports.length} 家机场`
             : `共收录 ${filteredAirports.length} 家机场`}
         </h2>
-        {filter === "我的收藏" && ready && favorites.length === 0 && (
-          <p className="text-sm text-gray-500">点击卡片上的 ❤️ 收藏机场</p>
-        )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {filteredAirports.map((airport) => (
-          <AirportCard
-            key={airport.id}
-            airport={airport}
-            isFavorite={isFavorite(airport.id)}
-            onToggleFavorite={toggleFavorite}
-          />
+          <AirportCard key={airport.id} airport={airport} />
         ))}
       </div>
 
