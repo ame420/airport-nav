@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
+import { useLanguage } from "./LanguageProvider";
+import { t } from "@/lib/i18n";
 
 interface CopyButtonProps {
   text: string;
-  label?: string;
 }
 
-export function CopyButton({ text, label = "复制链接" }: CopyButtonProps) {
+export function CopyButton({ text }: CopyButtonProps) {
+  const { lang } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -35,6 +37,8 @@ export function CopyButton({ text, label = "复制链接" }: CopyButtonProps) {
     }
   };
 
+  const label = copied ? t(lang, "card.copied") : t(lang, "card.copy");
+
   return (
     <button
       type="button"
@@ -45,7 +49,7 @@ export function CopyButton({ text, label = "复制链接" }: CopyButtonProps) {
       {copied ? (
         <>
           <Check className="w-4 h-4 text-green-500" />
-          已复制
+          {label}
         </>
       ) : (
         <>

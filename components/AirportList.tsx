@@ -4,6 +4,8 @@ import { useState, useMemo } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { AirportCard } from "./AirportCard";
 import { FilterBar } from "./FilterBar";
+import { useLanguage } from "./LanguageProvider";
+import { t, type TranslationKey } from "@/lib/i18n";
 import type { Airport } from "./AirportCard";
 import airportsData from "@/data/airports.json";
 
@@ -16,12 +18,21 @@ type SortOption =
   | "score-desc"
   | "traffic-desc";
 
+const SORT_OPTIONS: { value: SortOption; key: TranslationKey }[] = [
+  { value: "default", key: "sort.default" },
+  { value: "price-asc", key: "sort.priceAsc" },
+  { value: "price-desc", key: "sort.priceDesc" },
+  { value: "score-desc", key: "sort.scoreDesc" },
+  { value: "traffic-desc", key: "sort.trafficDesc" },
+];
+
 function parseTraffic(traffic: string): number {
   const match = traffic.match(/(\d+(?:\.\d+)?)\s*[GT]B?/i);
   return match ? parseFloat(match[1]) : 0;
 }
 
 export function AirportList() {
+  const { lang } = useLanguage();
   const [filter, setFilter] = useState("全部");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<SortOption>("default");
@@ -107,7 +118,7 @@ export function AirportList() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="搜索机场名称、标签或描述..."
+            placeholder={t(lang, "search.placeholder")}
             className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[44px]"
           />
         </div>
@@ -119,11 +130,11 @@ export function AirportList() {
             onChange={(e) => setSort(e.target.value as SortOption)}
             className="w-full sm:w-auto pl-10 pr-8 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer min-h-[44px]"
           >
-            <option value="default">默认推荐</option>
-            <option value="price-asc">价格从低到高</option>
-            <option value="price-desc">价格从高到低</option>
-            <option value="score-desc">评分从高到低</option>
-            <option value="traffic-desc">流量从大到小</option>
+            {SORT_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {t(lang, option.key)}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -131,8 +142,8 @@ export function AirportList() {
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white">
           {hasActiveFilter
-            ? `找到 ${filteredAirports.length} 家机场`
-            : `共收录 ${filteredAirports.length} 家机场`}
+            ? t(lang, "result.found", { count: filteredAirports.length })
+            : t(lang, "result.total", { count: filteredAirports.length })}
         </h2>
       </div>
 
@@ -144,7 +155,7 @@ export function AirportList() {
 
       {filteredAirports.length === 0 && (
         <div className="text-center py-16">
-          <p className="text-gray-500 dark:text-gray-400">没有找到匹配的机场</p>
+          <p className="text-gray-500 dark:text-gray-400">{t(lang, "result.empty")}</p>
           <button
             onClick={() => {
               setFilter("全部");
@@ -153,7 +164,7 @@ export function AirportList() {
             }}
             className="mt-4 px-4 py-2 text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
           >
-            清除筛选
+            {t(lang, "result.clear")}
           </button>
         </div>
       )}

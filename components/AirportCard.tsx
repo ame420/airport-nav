@@ -1,5 +1,9 @@
+"use client";
+
 import { Star, Zap, Globe, ExternalLink } from "lucide-react";
 import { CopyButton } from "./CopyButton";
+import { useLanguage } from "./LanguageProvider";
+import { t, translateCategory } from "@/lib/i18n";
 
 export interface Airport {
   id: string;
@@ -20,6 +24,7 @@ export interface Airport {
 }
 
 export function AirportCard({ airport }: { airport: Airport }) {
+  const { lang } = useLanguage();
   const extraUrls = airport.officialUrls?.slice(1) ?? [];
 
   return (
@@ -34,7 +39,7 @@ export function AirportCard({ airport }: { airport: Airport }) {
                 : "bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
             }`}
           >
-            {airport.category}
+            {translateCategory(lang, airport.category)}
           </span>
           {airport.tags.slice(0, 4).map((tag) => (
             <span
@@ -53,19 +58,19 @@ export function AirportCard({ airport }: { airport: Airport }) {
 
       <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-4">
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2.5 sm:p-3">
-          <div className="text-xs text-gray-500 dark:text-gray-400">月费</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">{t(lang, "card.monthlyFee")}</div>
           <div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">¥{airport.price}</div>
         </div>
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2.5 sm:p-3">
-          <div className="text-xs text-gray-500 dark:text-gray-400">流量</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">{t(lang, "card.traffic")}</div>
           <div className="text-sm font-bold text-gray-900 dark:text-white">{airport.traffic}</div>
         </div>
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2.5 sm:p-3">
-          <div className="text-xs text-gray-500 dark:text-gray-400">速度</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">{t(lang, "card.speed")}</div>
           <div className="text-sm font-bold text-gray-900 dark:text-white">{airport.speed}</div>
         </div>
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2.5 sm:p-3">
-          <div className="text-xs text-gray-500 dark:text-gray-400">评分</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">{t(lang, "card.score")}</div>
           <div className="flex items-center gap-1 text-sm font-bold text-gray-900 dark:text-white">
             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
             {airport.score}
@@ -76,7 +81,7 @@ export function AirportCard({ airport }: { airport: Airport }) {
       {airport.bandwidth && (
         <div className="mb-4">
           <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400 rounded">
-            带宽: {airport.bandwidth}
+            {t(lang, "card.bandwidth")}: {airport.bandwidth}
           </span>
         </div>
       )}
@@ -84,7 +89,7 @@ export function AirportCard({ airport }: { airport: Airport }) {
       <div className="mb-4">
         <div className="text-xs text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1">
           <Globe className="w-3 h-3" />
-          解锁支持
+          {t(lang, "card.unlock")}
         </div>
         <div className="flex flex-wrap gap-1.5 sm:gap-2">
           {airport.support.map((item) => (
@@ -106,11 +111,11 @@ export function AirportCard({ airport }: { airport: Airport }) {
           className="flex items-center justify-center gap-2 w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
         >
           <Zap className="w-4 h-4" />
-          前往注册
+          {t(lang, "card.register")}
           <ExternalLink className="w-4 h-4" />
         </a>
 
-        <CopyButton text={airport.affiliateUrl} label="复制注册链接" />
+        <CopyButton text={airport.affiliateUrl} />
 
         {extraUrls.length > 0 && (
           <div className="flex flex-wrap gap-2 justify-center">
@@ -122,7 +127,7 @@ export function AirportCard({ airport }: { airport: Airport }) {
                 rel="noopener noreferrer"
                 className="text-xs text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 underline"
               >
-                备用地址{idx + 1}
+                {t(lang, "card.backup")}{idx + 1}
               </a>
             ))}
           </div>
@@ -135,7 +140,7 @@ export function AirportCard({ airport }: { airport: Airport }) {
             rel="noopener noreferrer"
             className="block text-center text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
           >
-            查看详细测评 →
+            {t(lang, "card.review")} →
           </a>
         )}
       </div>
