@@ -6,7 +6,16 @@ interface FilterBarProps {
   onFilterChange?: (filter: string) => void;
 }
 
-const filters = ["全部", "月付", "中转", "专线", "大流量", "解锁流媒体"];
+const filters = [
+  "全部",
+  "低价",
+  "性价比",
+  "月付",
+  "中转",
+  "专线",
+  "大流量",
+  "解锁流媒体",
+];
 
 export function FilterBar({ onFilterChange }: FilterBarProps) {
   const [active, setActive] = useState("全部");

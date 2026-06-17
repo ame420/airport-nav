@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "低价机场导航站 - 精选高性价比机场推荐",
-  description: "精选性价比高的机场服务，按价格、流量、速度分类整理，帮你快速找到合适的选择。",
+  title: "机场导航站 - 低价与高性价比机场推荐",
+  description: "精选低价与高性价比机场服务，按价格、流量、速度、线路类型分类整理，帮你快速找到合适的选择。",
 };
 
 export default function RootLayout({
