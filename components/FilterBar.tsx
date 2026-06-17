@@ -34,7 +34,7 @@ export function FilterBar({ onFilterChange }: FilterBarProps) {
           className={`px-3 sm:px-4 py-2 text-sm font-medium border rounded-full transition-colors cursor-pointer min-h-[44px] ${
             active === item
               ? "bg-blue-600 text-white border-blue-600"
-              : "bg-white text-gray-700 border-gray-200 hover:bg-blue-50 hover:border-blue-200"
+              : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-600 hover:bg-blue-50 dark:hover:bg-gray-700 hover:border-blue-200 dark:hover:border-gray-500"
           }`}
         >
           {item}
