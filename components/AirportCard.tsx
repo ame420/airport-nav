@@ -1,4 +1,4 @@
-import { Star, Zap, Globe, ExternalLink } from "lucide-react";
+import { Star, Zap, Globe, ExternalLink, Heart } from "lucide-react";
 
 export interface Airport {
   id: string;
@@ -19,14 +19,24 @@ export interface Airport {
   recommend: boolean;
 }
 
-export function AirportCard({ airport }: { airport: Airport }) {
+interface AirportCardProps {
+  airport: Airport;
+  isFavorite?: boolean;
+  onToggleFavorite?: (id: string) => void;
+}
+
+export function AirportCard({
+  airport,
+  isFavorite = false,
+  onToggleFavorite,
+}: AirportCardProps) {
   const extraUrls = airport.officialUrls?.slice(1) ?? [];
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow flex flex-col">
       <div className="flex items-start justify-between mb-4">
-        <div>
-          <h3 className="text-lg font-bold text-gray-900">{airport.name}</h3>
+        <div className="min-w-0">
+          <h3 className="text-lg font-bold text-gray-900 truncate">{airport.name}</h3>
           <div className="flex flex-wrap gap-2 mt-2">
             <span
               className={`px-2 py-1 text-xs font-medium rounded-full ${
@@ -47,11 +57,29 @@ export function AirportCard({ airport }: { airport: Airport }) {
             ))}
           </div>
         </div>
-        {airport.recommend && (
-          <span className="px-2 py-1 text-xs font-bold bg-red-500 text-white rounded-full">
-            推荐
-          </span>
-        )}
+        <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+          {airport.recommend && (
+            <span className="px-2 py-1 text-xs font-bold bg-red-500 text-white rounded-full">
+              推荐
+            </span>
+          )}
+          {onToggleFavorite && (
+            <button
+              onClick={() => onToggleFavorite(airport.id)}
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              aria-label={isFavorite ? "取消收藏" : "收藏"}
+              title={isFavorite ? "取消收藏" : "收藏"}
+            >
+              <Heart
+                className={`w-5 h-5 transition-colors ${
+                  isFavorite
+                    ? "fill-red-500 text-red-500"
+                    : "text-gray-400 hover:text-red-400"
+                }`}
+              />
+            </button>
+          )}
+        </div>
       </div>
 
       <p className="text-gray-600 text-sm mb-4 line-clamp-2">

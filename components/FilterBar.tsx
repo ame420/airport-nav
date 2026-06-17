@@ -8,6 +8,7 @@ interface FilterBarProps {
 
 const filters = [
   "全部",
+  "我的收藏",
   "低价",
   "性价比",
   "月付",
