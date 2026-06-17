@@ -9,7 +9,7 @@ const airports = airportsData as Airport[];
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Hero />
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
         <StatsPanel airports={airports} />

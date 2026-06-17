@@ -86,8 +86,6 @@ export function AirportList() {
           return parseTraffic(b.traffic) - parseTraffic(a.traffic);
         case "default":
         default:
-          // recommend first, then score desc
-          if (a.recommend !== b.recommend) return a.recommend ? -1 : 1;
           return b.score - a.score;
       }
     });
@@ -110,7 +108,7 @@ export function AirportList() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="搜索机场名称、标签或描述..."
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[44px]"
+            className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[44px]"
           />
         </div>
 
@@ -119,7 +117,7 @@ export function AirportList() {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as SortOption)}
-            className="w-full sm:w-auto pl-10 pr-8 py-2.5 bg-white border border-gray-200 rounded-xl text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer min-h-[44px]"
+            className="w-full sm:w-auto pl-10 pr-8 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-900 dark:text-white appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer min-h-[44px]"
           >
             <option value="default">默认推荐</option>
             <option value="price-asc">价格从低到高</option>
@@ -131,7 +129,7 @@ export function AirportList() {
       </div>
 
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white">
           {hasActiveFilter
             ? `找到 ${filteredAirports.length} 家机场`
             : `共收录 ${filteredAirports.length} 家机场`}
@@ -146,14 +144,14 @@ export function AirportList() {
 
       {filteredAirports.length === 0 && (
         <div className="text-center py-16">
-          <p className="text-gray-500">没有找到匹配的机场</p>
+          <p className="text-gray-500 dark:text-gray-400">没有找到匹配的机场</p>
           <button
             onClick={() => {
               setFilter("全部");
               setQuery("");
               setSort("default");
             }}
-            className="mt-4 px-4 py-2 text-sm text-blue-600 bg-blue-50 rounded-full hover:bg-blue-100 transition-colors"
+            className="mt-4 px-4 py-2 text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors"
           >
             清除筛选
           </button>
