@@ -27,7 +27,13 @@ export default function RootLayout({
       lang="zh-CN"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <script
+          src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"
+          async
+        />
+      </body>
     </html>
   );
 }

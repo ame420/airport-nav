@@ -1,6 +1,7 @@
 import { Hero } from "@/components/Hero";
 import { AirportList } from "@/components/AirportList";
 import { StatsPanel } from "@/components/StatsPanel";
+import { Footer } from "@/components/Footer";
 import type { Airport } from "@/components/AirportCard";
 import airportsData from "@/data/airports.json";
 
@@ -13,6 +14,7 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
         <StatsPanel airports={airports} />
         <AirportList />
+        <Footer />
       </div>
     </main>
   );
