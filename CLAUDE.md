@@ -4,7 +4,7 @@
 
 ## 项目概述
 
-`airport-nav` 是一个基于 Next.js 16 的静态导航站，用于整理和展示低价 / 高性价比的机场（VPN/代理服务）信息。
+**一句话描述**：`airport-nav` 是一个基于 Next.js 16 的静态导航站，用于整理和展示低价 / 高性价比的机场（VPN/代理服务）信息。
 
 - 部署平台：Vercel
 - 仓库：`https://github.com/ame420/airport-nav`
@@ -136,6 +136,29 @@ vercel --prod
 - GitHub 仓库已接入 Vercel Git Integration：推送到 `main` 会自动触发部署。
 - 如需手动部署，使用 `vercel --prod`。
 - 唯一部署 URL 受 Vercel Deployment Protection 保护，生产域名 `airport-nav-kappa.vercel.app` 可公开访问。
+
+## 代码风格规范
+
+### 命名
+
+- **组件**：PascalCase，语义化，如 `AirportCard`、`ThemeToggle`。
+- **Hooks / 工具函数**：camelCase，以动词或 `use` 开头，如 `useTheme`、`parseTraffic`。
+- **类型 / 接口**：PascalCase，与对应数据/组件同名，如 `Airport`、`StatsPanelProps`。
+- **常量**：SCREAMING_SNAKE_CASE 或 camelCase，如 `STORAGE_KEY`、`filters`。
+- **CSS 类**：使用 Tailwind 工具类，复杂状态组合使用模板字符串，避免动态 class 名影响编译器扫描。
+
+### 注释
+
+- 组件文件顶部如需说明用途，使用简洁行内注释或短段落。
+- 复杂逻辑（如排序、筛选、合并策略）使用行内注释说明“为什么”。
+- 避免无意义注释；优先通过命名自解释。
+
+### 结构
+
+- `app/` 下保持 Server Component，状态管理下沉到 `components/` 的 Client Component。
+- 同一功能相关的组件、类型、常量就近组织，不创建过早的抽象层。
+- 工具脚本统一放在 `scripts/`，Node 脚本使用 CommonJS（`require`）以减少额外构建步骤。
+- 提交前运行 `npx tsc --noEmit` 和 `npm run build`，确保类型与静态导出均通过。
 
 ## 踩坑记录
 
