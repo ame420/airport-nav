@@ -50,6 +50,29 @@
       "https://5.6bcloud.top/#/register?code=5DKFf0U5"
     ]
   },
+    {
+    "id": "powerport",
+    "name": "动力港",
+    "category": "低价",
+    "tags": [
+      "中转",
+      "1Gbps带宽"
+    ],
+    "price": 8,
+    "traffic": "100G/月",
+    "speed": "1Gbps",
+    "score": 4.2,
+    "support": [
+      "ChatGPT",
+      "YouTube",
+      "Netflix"
+    ],
+    "description": "质量非常不错，全1X节点，8元100G性价比很高。热门节点1Gbps带宽，推荐联通、移动用户，电信用户慎选。",
+    "affiliateUrl": "https://xn--tfrza853d44tvst.xyz/#/register?code=hm0iLlzT",
+    "officialUrl": "https://xn--tfrza853d44tvst.xyz",
+    "reviewUrl": "https://github.com/KaWaIDeSuNe/xingjiabijichang/blob/main/测评/动力港.md",
+    "bandwidth": "1Gbps"
+  },
   {
     "id": "taotitu",
     "name": "淘气兔",
