@@ -68,21 +68,6 @@ function ensureRepo({ owner, repo }) {
   return dir;
 }
 
-function findReviewUrl(repoDir, name, owner, repo) {
-  const reviewsDir = path.join(repoDir, "测评");
-  if (!fs.existsSync(reviewsDir)) return undefined;
-  const files = fs.readdirSync(reviewsDir);
-  const normalized = name.toLowerCase().replace(/\s+/g, "");
-  const match = files.find((f) => {
-    const base = f.replace(/\.md$/, "").toLowerCase().replace(/\s+/g, "");
-    return base === normalized || normalized.includes(base) || base.includes(normalized);
-  });
-  if (match) {
-    return `https://github.com/${owner}/${repo}/blob/main/测评/${encodeURIComponent(match)}`;
-  }
-  return undefined;
-}
-
 function parseHeader(line) {
   const m = line.match(
     /^##\s*[一二三四五六七八九十]+、\s*(.+?)\s*\(\s*([^/]+)\/月\s*([^)]+)\s*\)/
@@ -160,16 +145,6 @@ function extractSupport(section) {
   return support.length ? support : ["YouTube"];
 }
 
-function inferScore(section) {
-  const text = section;
-  if (/数一数二|口碑一直挺好|非常不錯|非常优秀|质量数一数二|强烈推荐/.test(text))
-    return 4.7;
-  if (/质量非常不错|整体非常不错|性价比很高|表现优秀|稳定优质|运营五年/.test(text))
-    return 4.5;
-  if (/总体很不错|还是挺不错|质量还不错/.test(text)) return 4.3;
-  return 4.2;
-}
-
 function parseRepo(repoDir, source) {
   const readmePath = path.join(repoDir, "README.md");
   if (!fs.existsSync(readmePath)) {
@@ -194,13 +169,6 @@ function parseRepo(repoDir, source) {
     const bandwidth = extractBandwidth(section);
     const tags = extractTags(section);
     const support = extractSupport(section);
-    const score = inferScore(section);
-    const reviewUrl = findReviewUrl(
-      repoDir,
-      parsed.name,
-      source.owner,
-      source.repo
-    );
     const speed = bandwidth || "未标注";
 
     results.push({
@@ -211,13 +179,11 @@ function parseRepo(repoDir, source) {
       price: parsed.price,
       traffic: parsed.traffic,
       speed,
-      score,
       support,
       description: description || `${parsed.name}，${parsed.traffic}。`,
       affiliateUrl: urls[0],
       officialUrl: urls[0],
       officialUrls: urls.length > 1 ? urls : undefined,
-      reviewUrl,
       bandwidth,
     });
   }
@@ -269,10 +235,8 @@ function merge(existing, drafts) {
       : draft.description;
     current.speed = current.speed || draft.speed;
     current.bandwidth = current.bandwidth || draft.bandwidth;
-    current.reviewUrl = current.reviewUrl || draft.reviewUrl;
     current.tags = current.tags?.length ? current.tags : draft.tags;
     current.support = current.support?.length ? current.support : draft.support;
-    current.score = current.score != null ? current.score : draft.score;
 
     updated.push(draft.name);
   }
