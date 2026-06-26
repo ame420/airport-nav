@@ -15,14 +15,12 @@ type SortOption =
   | "default"
   | "price-asc"
   | "price-desc"
-  | "score-desc"
   | "traffic-desc";
 
 const SORT_OPTIONS: { value: SortOption; key: TranslationKey }[] = [
   { value: "default", key: "sort.default" },
   { value: "price-asc", key: "sort.priceAsc" },
   { value: "price-desc", key: "sort.priceDesc" },
-  { value: "score-desc", key: "sort.scoreDesc" },
   { value: "traffic-desc", key: "sort.trafficDesc" },
 ];
 
@@ -91,13 +89,11 @@ export function AirportList() {
           return a.price - b.price;
         case "price-desc":
           return b.price - a.price;
-        case "score-desc":
-          return b.score - a.score;
         case "traffic-desc":
           return parseTraffic(b.traffic) - parseTraffic(a.traffic);
         case "default":
         default:
-          return b.score - a.score;
+          return 0;
       }
     });
 

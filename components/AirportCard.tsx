@@ -1,6 +1,6 @@
 "use client";
 
-import { Star, Zap, Globe, ExternalLink } from "lucide-react";
+import { Zap, Globe, ExternalLink } from "lucide-react";
 import { CopyButton } from "./CopyButton";
 import { useLanguage } from "./LanguageProvider";
 import { t, translateCategory } from "@/lib/i18n";
@@ -13,13 +13,11 @@ export interface Airport {
   price: number;
   traffic: string;
   speed: string;
-  score: number;
   support: string[];
   description: string;
   affiliateUrl: string;
   officialUrl: string;
   officialUrls?: string[];
-  reviewUrl?: string;
   bandwidth?: string;
 }
 
@@ -68,13 +66,6 @@ export function AirportCard({ airport }: { airport: Airport }) {
         <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2.5 sm:p-3">
           <div className="text-xs text-gray-500 dark:text-gray-400">{t(lang, "card.speed")}</div>
           <div className="text-sm font-bold text-gray-900 dark:text-white">{airport.speed}</div>
-        </div>
-        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2.5 sm:p-3">
-          <div className="text-xs text-gray-500 dark:text-gray-400">{t(lang, "card.score")}</div>
-          <div className="flex items-center gap-1 text-sm font-bold text-gray-900 dark:text-white">
-            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-            {airport.score}
-          </div>
         </div>
       </div>
 
@@ -133,16 +124,6 @@ export function AirportCard({ airport }: { airport: Airport }) {
           </div>
         )}
 
-        {airport.reviewUrl && (
-          <a
-            href={airport.reviewUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block text-center text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
-          >
-            {t(lang, "card.review")} →
-          </a>
-        )}
       </div>
     </div>
   );

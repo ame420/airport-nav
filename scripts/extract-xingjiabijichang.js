@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 
 const README_PATH = "/tmp/xingjiabijichang/README.md";
-const REVIEWS_DIR = "/tmp/xingjiabijichang/测评";
 
 const PINYIN_IDS = {
   "飞兔云": "feitu-yun",
@@ -26,20 +25,6 @@ function slugify(name) {
   if (base) return base;
   // Fallback for unknown CJK names
   return "airport-" + Buffer.from(name).toString("hex").slice(0, 8);
-}
-
-function findReviewUrl(name) {
-  if (!fs.existsSync(REVIEWS_DIR)) return undefined;
-  const files = fs.readdirSync(REVIEWS_DIR);
-  const normalized = name.toLowerCase().replace(/\s+/g, "");
-  const match = files.find((f) => {
-    const base = f.replace(/\.md$/, "").toLowerCase().replace(/\s+/g, "");
-    return base === normalized || normalized.includes(base) || base.includes(normalized);
-  });
-  if (match) {
-    return `https://github.com/KaWaIDeSuNe/xingjiabijichang/blob/main/测评/${encodeURIComponent(match)}`;
-  }
-  return undefined;
 }
 
 function parseHeader(line) {
@@ -115,14 +100,6 @@ function extractSupport(section) {
   return support.length ? support : ["YouTube"];
 }
 
-function inferScore(section) {
-  const text = section;
-  if (/数一数二|口碑一直挺好|非常不錯|非常优秀|质量数一数二|强烈推荐/.test(text)) return 4.7;
-  if (/质量非常不错|整体非常不错|性价比很高|表现优秀|稳定优质|运营五年/.test(text)) return 4.5;
-  if (/总体很不错|还是挺不错|质量还不错/.test(text)) return 4.3;
-  return 4.2;
-}
-
 function parseSection(section) {
   const header = section.split(/\n/)[0];
   const parsed = parseHeader(header);
@@ -135,9 +112,6 @@ function parseSection(section) {
   const bandwidth = extractBandwidth(section);
   const tags = extractTags(section);
   const support = extractSupport(section);
-  const score = inferScore(section);
-  const reviewUrl = findReviewUrl(parsed.name);
-
   // Speed field: prefer bandwidth, fallback to "未标注"
   const speed = bandwidth || "未标注";
 
@@ -149,15 +123,12 @@ function parseSection(section) {
     price: parsed.price,
     traffic: parsed.traffic,
     speed,
-    score,
     support,
     description: description || `${parsed.name}，${parsed.traffic}，性价比机场。`,
     affiliateUrl: urls[0],
     officialUrl: urls[0],
     officialUrls: urls.length > 1 ? urls : undefined,
-    reviewUrl,
     bandwidth,
-    recommend: score >= 4.5,
   };
 }
 
